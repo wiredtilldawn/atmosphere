@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../models/weather_model.dart';
 import '../services/weather_service.dart';
 
@@ -78,52 +80,85 @@ class _WeatherPageState extends State<WeatherPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text('Weather App'),
+        backgroundColor: Colors.transparent,
+        centerTitle: true,
+        title: Text(
+          "atmosphere.",
+          style: GoogleFonts.ibmPlexMono(
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
+        )
       ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Text field for city name
-              TextField(
-                controller: _cityController,
-                decoration: InputDecoration(
-                  labelText: 'Enter city name',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 16),
-              // Fetch weather by city name button
-              ElevatedButton(
-                onPressed: _fetchWeatherByCity,
-                child: Text('Fetch Weather by City'),
-              ),
-              SizedBox(height: 16),
-              // Fetch weather by current location button
-              ElevatedButton(
-                onPressed: _fetchWeatherByLocation,
-                child: Text('Fetch Weather by Current Location'),
-              ),
-              SizedBox(height: 32),
-              // Loading indicator or error message
               _isLoading
                   ? CircularProgressIndicator()
                   : _errorMessage.isNotEmpty
-                  ? Text(_errorMessage)
+                  ? Text(_errorMessage, style: GoogleFonts.ibmPlexMono(color: Colors.white,),)
                   : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // City name
-                  Text(_weather?.cityName ?? "Unable to load city"),
+                  Text(_weather?.cityName ?? "Unable to load city", style: GoogleFonts.ibmPlexMono(color: Colors.purple, fontSize: 20)),
                   // Temperature
-                  Text('${_weather?.temperature?.round() ?? 'N/A'}°C'),
+                  Text('${_weather?.temperature?.round() ?? 'N/A'}°C', style: GoogleFonts.ibmPlexMono(color: Colors.yellow, fontSize: 50)),
                   // Main Condition
-                  Text(_weather?.mainCondition ?? "N/A"),
-                ],
+                  Text(_weather?.mainCondition ?? "N/A", style: GoogleFonts.ibmPlexMono(color: Colors.deepOrangeAccent, fontSize: 20))
+                  ],
               ),
+              // Text field for city name
+              Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+
+                    TextField(
+                      controller: _cityController,
+                      decoration: InputDecoration(
+                        labelText: 'Enter city name',
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.pink
+                          )
+                        )
+                      ),
+                    ),
+
+                    // Fetch weather by city name button
+                   ElevatedButton(
+                     style: ElevatedButton.styleFrom(
+                       backgroundColor: Colors.green
+                     ),
+                      onPressed: _fetchWeatherByCity,
+                      child: Text('Fetch Weather by City', style: TextStyle(
+                        color: Colors.black
+                      ),
+                    ),
+                   ),
+
+                    // Fetch weather by current location button
+
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red
+                      ),
+                      onPressed: _fetchWeatherByLocation,
+                      child: Text('Fetch Weather by Current Location', style: TextStyle(
+                          color: Colors.black
+                      ),),
+                    ),
+                  ],
+                ),
+              )
+              // Loading indicator or error message
+
             ],
           ),
         ),
